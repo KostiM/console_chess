@@ -1,5 +1,4 @@
 #include <iostream>
-#include "Position.h"
 #include "Piece.h"
 #include "Pawn.h"
 #include "Board.h"
@@ -20,8 +19,6 @@ int main()
         board.draw();
         while (!(board.turn())) {}
     }
-    
-    
     return 0;
 }
 

@@ -67,7 +67,11 @@ bool Board::turn()
         cout << "Current position must be different from desired position!\n";
         return false;
     }
+
+    if (pieces_[toNumber][toLetter])
+        pieces_[toNumber][toLetter] = 0;
     swap(pieces_[fromNumber][fromLetter],pieces_[toNumber][toLetter]);
+
     cout << "The piece was successefully moved!";
     black_turns_ = !black_turns_;
     return true;
