@@ -1,18 +1,21 @@
 #include "Board.h"
-#include <algorithm> //swap
+#include "Pawn.h"
+#include "Knight.h"
 
-constexpr auto letters = "   a   b   c   d   e   f   g   h\n";
-constexpr auto line = " --------------------------------\n";
-constexpr auto empty_cell = "   ";
-enum letter {a, b, c, d, e, f, g, h};
-
-letter char2letter(char);
 
 Board::Board()
 {
     pieces_.reserve(8);
     for (int i = 0; i < 8; ++i)
         pieces_.push_back(vector<Piece *>(8, 0));
+    for (int i = 0; i < 8; ++i) {
+        pieces_[1][i] = new Pawn(1, i, white);
+        pieces_[6][i] = new Pawn(6, i, black);
+    }
+    pieces_[0][1] = new Knight(0, 1, white);
+    pieces_[0][6] = new Knight(0, 6, white);
+    pieces_[7][1] = new Knight(7, 1, black);
+    pieces_[7][6] = new Knight(7, 6, black);
 }
 
 void Board::draw()
@@ -68,11 +71,13 @@ bool Board::turn()
         return false;
     }
 
-    if (pieces_[toNumber][toLetter])
-        pieces_[toNumber][toLetter] = 0;
-    swap(pieces_[fromNumber][fromLetter],pieces_[toNumber][toLetter]);
+    if (pieces_[fromNumber][fromLetter]->try2move(toNumber, toLetter, this))
+        if (pieces_[fromNumber][fromLetter]->move(toNumber, toLetter, this)) {}
+        else
+            return false;
+    else
+        return false;
 
-    cout << "The piece was successefully moved!";
     black_turns_ = !black_turns_;
     return true;
 }

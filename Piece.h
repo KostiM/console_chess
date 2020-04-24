@@ -1,13 +1,19 @@
 #pragma once
 #include <iostream>
-#include "Position.h"
+#include "math.h" // abs() 
+constexpr auto black = true;
+constexpr auto white = false;
+
 
 class Piece {
+protected:
+	int num_;
+	int letter_;
+	bool firstMoveDone_ = false;
 public:
-	bool is_black_ = true;
-	//Position position_ = Position(0,0);
-	//Position & getPosition() { return position_; }
-	//explicit Piece(size_t row = 0,size_t col = 0, bool black = true ) : position_(row,col), is_black_(black){}
+	Piece(int num, int letter, bool);
+	bool is_black_;
 	virtual void print() = 0;
-	//virtual void move(size_t , size_t) = 0;
+	bool move(int toNumber, int toLetter, void * board);
+	virtual bool try2move(int toNumber, int toLetter, void * board) = 0;
 };
