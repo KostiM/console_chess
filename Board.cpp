@@ -1,6 +1,10 @@
 #include "Board.h"
 #include "Pawn.h"
 #include "Knight.h"
+#include "Rook.h"
+#include "Bishop.h"
+#include "Queen.h"
+#include "King.h"
 
 
 Board::Board()
@@ -16,6 +20,18 @@ Board::Board()
     pieces_[0][6] = new Knight(0, 6, white);
     pieces_[7][1] = new Knight(7, 1, black);
     pieces_[7][6] = new Knight(7, 6, black);
+    pieces_[0][0] = new Rook(0, 0, white);
+    pieces_[0][7] = new Rook(0, 7, white);
+    pieces_[7][0] = new Rook(7, 0, black);
+    pieces_[7][7] = new Rook(7, 7, black);
+    pieces_[0][2] = new Bishop(0, 2, white);
+    pieces_[0][5] = new Bishop(0, 5, white);
+    pieces_[7][2] = new Bishop(7, 2, black);
+    pieces_[7][5] = new Bishop(7, 5, black);
+    pieces_[0][3] = new Queen(0, 3, white);
+    pieces_[7][3] = new Queen(7, 3, black);
+    pieces_[0][4] = new King(0, 4, white);
+    pieces_[7][4] = new King(7, 4, black);
 }
 
 void Board::draw()

@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Piece.h"
 #include "Board.h"
-#include "Pawn.h"
 
 
 using namespace std;
