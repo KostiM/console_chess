@@ -1,6 +1,5 @@
 #include "Queen.h"
 #include "Board.h"
-#include <iostream>
 
 Queen::Queen(int num, int letter, bool is_black)
 	: Piece(num, letter, is_black)
@@ -12,9 +11,8 @@ void Queen::print()
 	std::cout << (is_black_ ? 'B' : 'W') << ' ' << 'Q';
 }
 
-bool Queen::try2move(int toNumber, int toLetter, void* boardPtr)
+bool Queen::try2move(int toNumber, int toLetter, Board* board)
 {
-	Board* board = (Board*) boardPtr;
 	int deltaNumber = toNumber - num_;
 	int deltaLetter = toLetter - letter_;
 
@@ -23,28 +21,28 @@ bool Queen::try2move(int toNumber, int toLetter, void* boardPtr)
 			if (deltaNumber > 0 && deltaLetter > 0) {
 				for (int i = 1, j = 1; i < deltaNumber; ++i, ++j)
 					if (board->pieces_[num_ + i][letter_ + j]) {
-						std::cout << "The queen can not move trough another piece.\n";
+						//std::cout << "The queen can not move trough another piece.\n";
 						return false;
 					}
 			}
 			else if (deltaNumber > 0 && deltaLetter < 0) {
 				for (int i = 1, j = -1; i < deltaNumber; ++i, --j)
 					if (board->pieces_[num_ + i][letter_ + j]) {
-						std::cout << "The queen can not move trough another piece.\n";
+						//std::cout << "The queen can not move trough another piece.\n";
 						return false;
 					}
 			}
 			else if (deltaNumber < 0 && deltaLetter > 0) {
 				for (int i = -1, j = 1; j < deltaLetter; --i, ++j)
 					if (board->pieces_[num_ + i][letter_ + j]) {
-						std::cout << "The queen can not move trough another piece.\n";
+						//std::cout << "The queen can not move trough another piece.\n";
 						return false;
 					}
 			}
 			else {
 				for (int i = -1, j = -1; j > deltaNumber; --i, --j)
 					if (board->pieces_[num_ + i][letter_ + j]) {
-						std::cout << "The queen can not move trough another piece.\n";
+						//std::cout << "The queen can not move trough another piece.\n";
 						return false;
 					}
 			}
@@ -54,7 +52,7 @@ bool Queen::try2move(int toNumber, int toLetter, void* boardPtr)
 				if (deltaLetter > 0) {
 					for (int i = 1; i < deltaLetter; ++i) {
 						if (board->pieces_[num_][letter_ + i]) {
-							std::cout << "The queen can not move trough another piece.\n";
+							//std::cout << "The queen can not move trough another piece.\n";
 							return false;
 						}
 					}
@@ -62,7 +60,7 @@ bool Queen::try2move(int toNumber, int toLetter, void* boardPtr)
 				else {
 					for (int i = -1; i > deltaLetter; --i) {
 						if (board->pieces_[num_][letter_ + i]) {
-							std::cout << "The queen can not move trough another piece.\n";
+							//std::cout << "The queen can not move trough another piece.\n";
 							return false;
 						}
 					}
@@ -72,7 +70,7 @@ bool Queen::try2move(int toNumber, int toLetter, void* boardPtr)
 				if (deltaNumber > 0) {
 					for (int i = 1; i < deltaNumber; ++i) {
 						if (board->pieces_[num_ + i][letter_]) {
-							std::cout << "The queen can not move trough another piece.\n";
+							//std::cout << "The queen can not move trough another piece.\n";
 							return false;
 						}
 					}
@@ -80,7 +78,7 @@ bool Queen::try2move(int toNumber, int toLetter, void* boardPtr)
 				else {
 					for (int i = -1; i > deltaNumber; --i) {
 						if (board->pieces_[num_ + i][letter_]) {
-							std::cout << "The queen can not move trough another piece.\n";
+							//std::cout << "The queen can not move trough another piece.\n";
 							return false;
 						}
 					}
@@ -90,7 +88,7 @@ bool Queen::try2move(int toNumber, int toLetter, void* boardPtr)
 		}
 	}
 	else {
-		std::cout << "The queen can not move there.\n";
+		//std::cout << "The queen can not move there.\n";
 		return false;
 	}
 

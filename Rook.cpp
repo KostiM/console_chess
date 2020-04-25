@@ -1,6 +1,5 @@
 #include "Rook.h"
 #include "Board.h"
-#include<iostream>
 
 Rook::Rook(int num, int letter, bool is_black)
 	: Piece(num, letter, is_black)
@@ -12,9 +11,8 @@ void Rook::print()
 	std::cout << (is_black_ ? 'B' : 'W') << ' ' << 'R';
 }
 
-bool Rook::try2move(int toNumber, int toLetter, void* boardPtr)
+bool Rook::try2move(int toNumber, int toLetter, Board* board)
 {
-	Board* board = (Board*) boardPtr;
 	int deltaNumber = toNumber - num_;
 	int deltaLetter = toLetter - letter_;
 
@@ -23,7 +21,7 @@ bool Rook::try2move(int toNumber, int toLetter, void* boardPtr)
 			if (deltaLetter > 0) {
 				for (int i = 1; i < deltaLetter; ++i) {
 					if (board->pieces_[num_][letter_ + i]) {
-						std::cout << "The rook can not move trough another piece.\n";
+						//std::cout << "The rook can not move trough another piece.\n";
 						return false;
 					}
 				}
@@ -31,7 +29,7 @@ bool Rook::try2move(int toNumber, int toLetter, void* boardPtr)
 			else {
 				for (int i = -1; i > deltaLetter; --i) {
 					if (board->pieces_[num_][letter_ + i]) {
-						std::cout << "The rook can not move trough another piece.\n";
+						//std::cout << "The rook can not move trough another piece.\n";
 						return false;
 					}
 				}
@@ -41,7 +39,7 @@ bool Rook::try2move(int toNumber, int toLetter, void* boardPtr)
 			if (deltaNumber > 0) {
 				for (int i = 1; i < deltaNumber; ++i) {
 					if (board->pieces_[num_ + i][letter_ ]) {
-						std::cout << "The rook can not move trough another piece.\n";
+						//std::cout << "The rook can not move trough another piece.\n";
 						return false;
 					}
 				}
@@ -49,7 +47,7 @@ bool Rook::try2move(int toNumber, int toLetter, void* boardPtr)
 			else {
 				for (int i = -1; i > deltaNumber; --i) {
 					if (board->pieces_[num_ + i][letter_]) {
-						std::cout << "The rook can not move trough another piece.\n";
+						//std::cout << "The rook can not move trough another piece.\n";
 						return false;
 					}
 				}
@@ -58,7 +56,7 @@ bool Rook::try2move(int toNumber, int toLetter, void* boardPtr)
 		
 	}
 	else {
-		std::cout << "The rook can not move there.\n";
+		//std::cout << "The rook can not move there.\n";
 		return false;
 	}
 	return true;

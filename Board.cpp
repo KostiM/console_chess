@@ -12,7 +12,7 @@ Board::Board()
     pieces_.reserve(8);
     for (int i = 0; i < 8; ++i)
         pieces_.push_back(vector<Piece *>(8, 0));
-    for (int i = 0; i < 8; ++i) {
+   for (int i = 0; i < 8; ++i) {
         pieces_[1][i] = new Pawn(1, i, white);
         pieces_[6][i] = new Pawn(6, i, black);
     }
@@ -31,7 +31,40 @@ Board::Board()
     pieces_[0][3] = new Queen(0, 3, white);
     pieces_[7][3] = new Queen(7, 3, black);
     pieces_[0][4] = new King(0, 4, white);
+    whiteKing_ = pieces_[0][4];
     pieces_[7][4] = new King(7, 4, black);
+    blackKing_ = pieces_[7][4];
+
+}
+
+Board::~Board()
+{
+    for (int i = 0; i < 8; ++i)
+        for (int j = 0; j < 8; ++j)
+            delete pieces_[i][j];
+}
+
+bool Board::check4check(bool for_black) 
+{
+    Piece * king = ( for_black ? blackKing_ : whiteKing_);
+    for (int i = 0; i < 8; ++i)
+        for (int j = 0; j < 8; ++j)
+            if (pieces_[i][j] && pieces_[i][j]->is_black_ != for_black
+                && pieces_[i][j]->try2move(king->num_, king->letter_, this))
+                return true;
+
+    return false;
+}
+
+bool Board::check4check(int num, int letter, bool for_black)
+{
+    for (int i = 0; i < 8; ++i)
+        for (int j = 0; j < 8; ++j)
+            if (pieces_[i][j] && pieces_[i][j]->is_black_ != for_black
+                && pieces_[i][j]->try2move(num, letter, this))
+                return true;
+
+    return false;
 }
 
 void Board::draw()
@@ -61,15 +94,20 @@ bool Board::turn()
     char fromChar, toChar;
     int fromNumber, toNumber;
     letter fromLetter, toLetter;
-    if (black_turns_) cout << "Black`s turn! ";
-    else cout << "White`s turn! ";
-    cout << "Enter your move(ex. b1 b2):";
+    if (black_turns_) 
+        cout << "Black`s turn!\n";
+    else 
+        cout << "White`s turn!\n";
+    if (is_check)
+        cout << "You`ve got a check!\n";
+
+    cout << "Enter your move (ex. b1 b2):";
     cin >> fromChar >> fromNumber >> toChar >> toNumber;
     cout << endl;
     if (fromChar > 'h' || fromChar < 'a' || toChar > 'h' || toChar < 'a' ||
         fromNumber < 1 || fromNumber > 8 || toNumber < 1 || toNumber > 8)
     {
-        cout << "You entered incorrect move! Please try again!\n";
+        cout << "You entered incorrect move! Please, try again.\n";
         return false;
     }
     fromLetter = char2letter(fromChar);
@@ -79,11 +117,11 @@ bool Board::turn()
     if (((!black_turns_) && pieces_[fromNumber][fromLetter]->is_black_) ||
         (black_turns_ && (!pieces_[fromNumber][fromLetter]->is_black_))) 
     {
-        cout << "You can not move oppenent`s piece!\n";
+        cout << "You can not move oppenent`s piece.\n";
         return false;
     }
     if (fromLetter == toLetter && fromNumber == toNumber) {
-        cout << "Current position must be different from desired position!\n";
+        cout << "Current position must be different from desired position.\n";
         return false;
     }
 
@@ -91,10 +129,17 @@ bool Board::turn()
         if (pieces_[fromNumber][fromLetter]->move(toNumber, toLetter, this)) {}
         else
             return false;
-    else
+    else {
+        cout << "This is illegal move! Please, try again mindfully.";
         return false;
+    }
 
     black_turns_ = !black_turns_;
+
+    is_check = check4check(black_turns_);
+
+    if (is_check) {}         // continue check for checkmate
+
     return true;
 }
 

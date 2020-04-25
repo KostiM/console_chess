@@ -1,7 +1,6 @@
 #include "Pawn.h"
 #include "Board.h"
 
-
 Pawn::Pawn(int num, int letter, bool is_black)
 	:Piece(num, letter, is_black)
 {
@@ -12,9 +11,8 @@ void Pawn::print()
 	std::cout << (is_black_ ? 'B' : 'W') << ' ' << 'P';
 }
 
-bool Pawn::try2move(int toNumber, int toLetter, void * boardPtr)
+bool Pawn::try2move(int toNumber, int toLetter, Board* board)
 {
-	Board* board = (Board*)boardPtr;
 	int deltaNumber = toNumber - num_;
 	int deltaLetter = toLetter - letter_;
 	if (is_black_) {
@@ -32,6 +30,6 @@ bool Pawn::try2move(int toNumber, int toLetter, void * boardPtr)
 			return true;
 	}
 	
-	cout << "The pawn can not move there.\n";
+	//cout << "The pawn can not move there.\n";
 	return false;
 }

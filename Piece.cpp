@@ -6,9 +6,8 @@ Piece::Piece(int num, int letter, bool is_black)
 {
 }
 
-bool Piece::move(int toNumber, int toLetter, void* boardV)
+bool Piece::move(int toNumber, int toLetter, Board * board)
 {
-	Board* board = (Board*)boardV;
 	if (board->pieces_[toNumber][toLetter])
 		if (is_black_ != board->pieces_[toNumber][toLetter]->is_black_) {
 			delete board->pieces_[toNumber][toLetter];
@@ -21,8 +20,8 @@ bool Piece::move(int toNumber, int toLetter, void* boardV)
 	swap(board->pieces_[num_][letter_], board->pieces_[toNumber][toLetter]);
 	num_ = toNumber;
 	letter_ = toLetter;
-	firstMoveDone_ = true;
+	if(!firstMoveDone_)
+		firstMoveDone_ = true;
 	cout << "The piece was successefully moved!\n";
 	return true;
-	
 }
