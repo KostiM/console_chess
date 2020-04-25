@@ -12,10 +12,10 @@ Board::Board()
     pieces_.reserve(8);
     for (int i = 0; i < 8; ++i)
         pieces_.push_back(vector<Piece *>(8, 0));
-   for (int i = 0; i < 8; ++i) {
+   /*for (int i = 0; i < 8; ++i) {
         pieces_[1][i] = new Pawn(1, i, white);
         pieces_[6][i] = new Pawn(6, i, black);
-    }
+    }*/
     pieces_[0][1] = new Knight(0, 1, white);
     pieces_[0][6] = new Knight(0, 6, white);
     pieces_[7][1] = new Knight(7, 1, black);
@@ -93,14 +93,8 @@ bool Board::turn()
 {
     char fromChar, toChar;
     int fromNumber, toNumber;
-    letter fromLetter, toLetter;
-    if (black_turns_) 
-        cout << "Black`s turn!\n";
-    else 
-        cout << "White`s turn!\n";
-    if (is_check)
-        cout << "You`ve got a check!\n";
-
+    int fromLetter, toLetter;
+    
     cout << "Enter your move (ex. b1 b2):";
     cin >> fromChar >> fromNumber >> toChar >> toNumber;
     cout << endl;
