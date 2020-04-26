@@ -13,25 +13,7 @@ bool Piece::move(int toNumber, int toLetter, Board * board)
 		return false;
 	}
 
-	
-	Piece* toBackup = board->pieces_[toNumber][toLetter];
-	if (toBackup)
-		board->pieces_[toNumber][toLetter] = 0;
-		
-	int numBackup = num_;
-	int letterBackup = letter_;
-		
-	swap(board->pieces_[numBackup][letterBackup], board->pieces_[toNumber][toLetter]);
-	num_ = toNumber;
-	letter_ = toLetter;
-
-	bool ok = (board->black_turns_ ? board->check4check(black) : board->check4check(white));
-		
-	swap(board->pieces_[numBackup][letterBackup], board->pieces_[toNumber][toLetter]);
-	num_ = numBackup;
-	letter_ = letterBackup;
-
-	board->pieces_[toNumber][toLetter] = toBackup;
+	bool ok = move4try(toNumber,toLetter, board); // move2try checks if the move don`t cause check
 
 	if (ok) {
 		cout << "This move causes or do not avoid check! Please, try again mindfully.\n";
@@ -51,4 +33,30 @@ bool Piece::move(int toNumber, int toLetter, Board * board)
 		firstMoveDone_ = true;
 	cout << "The piece was successefully moved!\n";
 	return true;
+}
+
+bool Piece::move4try(int toNumber, int toLetter, Board* board)
+{
+	if (board->pieces_[toNumber][toLetter] && is_black_ == board->pieces_[toNumber][toLetter]->is_black_) {
+		return false;
+	}
+	Piece* toBackup = board->pieces_[toNumber][toLetter];
+	if (toBackup)
+		board->pieces_[toNumber][toLetter] = 0;
+
+	int numBackup = num_;
+	int letterBackup = letter_;
+
+	swap(board->pieces_[numBackup][letterBackup], board->pieces_[toNumber][toLetter]);
+	num_ = toNumber;
+	letter_ = toLetter;
+
+	bool ok = (board->black_turns_ ? board->check4check(black) : board->check4check(white));
+
+	swap(board->pieces_[numBackup][letterBackup], board->pieces_[toNumber][toLetter]);
+	num_ = numBackup;
+	letter_ = letterBackup;
+
+	board->pieces_[toNumber][toLetter] = toBackup;
+	return ok;
 }

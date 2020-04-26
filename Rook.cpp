@@ -4,6 +4,7 @@
 Rook::Rook(int num, int letter, bool is_black)
 	: Piece(num, letter, is_black)
 {
+	canBeCovered_ = true;
 }
 
 void Rook::print()

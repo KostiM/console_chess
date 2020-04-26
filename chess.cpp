@@ -10,10 +10,13 @@ int main()
     while (true)
     {
         board.draw();
-        if (board.black_turns_)
-            cout << "Black`s turn!\n";
-        else
-            cout << "White`s turn!\n";
+
+        if (board.is_checkmate) {
+            cout << board.black_turns_ ? "White win!\n" : "Black win!\n";
+            break;
+        }
+        cout << (board.black_turns_ ? "Black`s turn!\n" : "White`s turn!\n");
+        
         if (board.is_check)
             cout << "You`ve got a check!\n";
         while (!(board.turn())) {}

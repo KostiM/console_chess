@@ -4,6 +4,7 @@
 Queen::Queen(int num, int letter, bool is_black)
 	: Piece(num, letter, is_black)
 {
+	canBeCovered_ = true;
 }
 
 void Queen::print()
@@ -84,7 +85,6 @@ bool Queen::try2move(int toNumber, int toLetter, Board* board)
 					}
 				}
 			}
-
 		}
 	}
 	else {
