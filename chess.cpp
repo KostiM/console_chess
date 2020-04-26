@@ -12,7 +12,7 @@ int main()
         board.draw();
 
         if (board.is_checkmate) {
-            cout << board.black_turns_ ? "White win!\n" : "Black win!\n";
+            cout << (board.black_turns_ ? "White win!\n" : "Black win!\n");
             break;
         }
         cout << (board.black_turns_ ? "Black`s turn!\n" : "White`s turn!\n");
@@ -21,5 +21,6 @@ int main()
             cout << "You`ve got a check!\n";
         while (!(board.turn())) {}
     }
+    system("pause");
     return 0;
 }

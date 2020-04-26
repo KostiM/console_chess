@@ -12,24 +12,24 @@ Board::Board()
     pieces_.reserve(8);
     for (int i = 0; i < 8; ++i)
         pieces_.push_back(vector<Piece *>(8, 0));
-   /*for (int i = 0; i < 8; ++i) {
+   for (int i = 0; i < 8; ++i) {
         pieces_[1][i] = new Pawn(1, i, white);
         pieces_[6][i] = new Pawn(6, i, black);
-    }*/
-    /*pieces_[0][1] = new Knight(0, 1, white);
+    }
+    pieces_[0][1] = new Knight(0, 1, white);
     pieces_[0][6] = new Knight(0, 6, white);
     pieces_[7][1] = new Knight(7, 1, black);
-    pieces_[7][6] = new Knight(7, 6, black);*/
+    pieces_[7][6] = new Knight(7, 6, black);
     pieces_[0][0] = new Rook(0, 0, white);
     pieces_[0][7] = new Rook(0, 7, white);
     pieces_[7][0] = new Rook(7, 0, black);
     pieces_[7][7] = new Rook(7, 7, black);
-    /*pieces_[0][2] = new Bishop(0, 2, white);
+    pieces_[0][2] = new Bishop(0, 2, white);
     pieces_[0][5] = new Bishop(0, 5, white);
     pieces_[7][2] = new Bishop(7, 2, black);
     pieces_[7][5] = new Bishop(7, 5, black);
     pieces_[0][3] = new Queen(0, 3, white);
-    pieces_[7][3] = new Queen(7, 3, black);*/
+    pieces_[7][3] = new Queen(7, 3, black);
     pieces_[0][4] = new King(0, 4, white);
     whiteKing_ = pieces_[0][4];
     pieces_[7][4] = new King(7, 4, black);
@@ -184,7 +184,7 @@ bool Board::check4check(int num, int letter, bool for_black)
     return false;
 }
 
-bool Board::check4mate(bool for_black) 
+bool Board::check4mate(bool for_black)
 {
     //check if any allied piece can capture the checker
     for(int i = 0; i < 8; ++i)
@@ -204,8 +204,9 @@ bool Board::check4mate(bool for_black)
                     return false;
 
     // check if any piece can cover the king
+
     check4check(for_black); // in order to update checkerNum_ and checkerLetter_
-    if (check4cover(king, pieces_[checkerNum_][checkerLetter_]))
+    if (!check4cover(king, pieces_[checkerNum_][checkerLetter_]))
         return false;
 
 
