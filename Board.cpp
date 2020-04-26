@@ -5,6 +5,7 @@
 #include "Bishop.h"
 #include "Queen.h"
 #include "King.h"
+#include <algorithm> //swap()
 
 
 Board::Board()
@@ -34,7 +35,6 @@ Board::Board()
     whiteKing_ = pieces_[0][4];
     pieces_[7][4] = new King(7, 4, black);
     blackKing_ = pieces_[7][4];
-
 }
 
 Board::~Board()
@@ -71,7 +71,7 @@ bool Board::turn()
     char fromChar, toChar;
     int fromNumber, toNumber;
     int fromLetter, toLetter;
-    
+
     cout << "Enter your move (ex. b1 b2):";
     cin >> fromChar >> fromNumber >> toChar >> toNumber;
     cout << endl;
@@ -85,8 +85,12 @@ bool Board::turn()
     toLetter = char2letter(toChar);
     --fromNumber;
     --toNumber;
-    if (((!black_turns_) && pieces_[fromNumber][fromLetter]->is_black_) ||
-        (black_turns_ && (!pieces_[fromNumber][fromLetter]->is_black_))) 
+    if (!pieces_[fromNumber][fromLetter])
+    {
+        cout << "Your move is illegal! Please, try again.\n";
+        return false;
+    }
+    if (black_turns_ != pieces_[fromNumber][fromLetter]->is_black_)
     {
         cout << "You can not move oppenent`s piece.\n";
         return false;
@@ -96,15 +100,27 @@ bool Board::turn()
         return false;
     }
 
-    if (pieces_[fromNumber][fromLetter]->try2move(toNumber, toLetter, this))
-        if (pieces_[fromNumber][fromLetter]->move(toNumber, toLetter, this)) {}
+    if (fromLetter == e && abs(toLetter - fromLetter) == 2
+        && (fromNumber == 0 || fromNumber == 7) && (toNumber - fromNumber) == 0) { // check for castling
+        if (is_check) {
+            cout << "You can not do castling when your king is checked!";
+            return 0;
+        }
+
+        if (castling(toNumber, toLetter)) {}
         else
             return false;
-    else {
-        cout << "This is illegal move! Please, try again mindfully.";
-        return false;
     }
-
+    else {
+        if (pieces_[fromNumber][fromLetter]->try2move(toNumber, toLetter, this))
+            if (pieces_[fromNumber][fromLetter]->move(toNumber, toLetter, this)) {}
+            else
+                return false;
+        else {
+            cout << "This is illegal move! Please, try again mindfully.\n";
+            return false;
+        }
+    }
     black_turns_ = !black_turns_;
 
     is_check = check4check(black_turns_);
@@ -200,7 +216,7 @@ bool Board::check4mate(bool for_black)
     for (int i = -1; i < 2; ++i)
         for (int j = -1; j < 2; ++j)
             if (i || j)
-                if (king->try2move(king->num_ + i, king->letter_ + j, this) && king->move4try(king->num_, king->letter_, this))
+                if (king->try2move(king->num_ + i, king->letter_ + j, this) && king->move4try(king->num_ + i, king->letter_ + j, this))
                     return false;
 
     // check if any piece can cover the king
@@ -310,4 +326,55 @@ bool Board::check4cover(Piece* king, Piece* checker)
     else {
         return false;
     }
+}
+
+bool Board::castling(int num, int letter)
+{
+    if (pieces_[num][e]->firstMoveDone_) {
+        cout << "Castling is not allowed. The king have already moved.\n";
+        return false;
+    }
+
+    if (letter == g) {  //short castling
+        if (pieces_[num][h]->firstMoveDone_) {
+            cout << "Castling is illegal. The rook have already moved.\n";
+            return false;
+        }
+
+        if (pieces_[num][f] || pieces_[num][g])
+        {
+            cout << "Castling is illegal.\n";
+            return false;
+        }
+        if (check4check(num, f, black_turns_) || check4check(num, g, black_turns_))
+        {
+            cout << "Castling is illegal.\n";
+            return false;
+        }
+        pieces_[num][e]->move(num, g, this);
+        pieces_[num][h]->move(num, f, this);
+    }
+    else { // letter == c long castlig
+        if (pieces_[num][a]->firstMoveDone_) {
+            cout << "Castling is illegal. The rook have already moved.\n";
+            return false;
+        }
+
+        if (pieces_[num][b] || pieces_[num][c] || pieces_[num][d])
+        {
+            cout << "Castling is illegal.\n";
+            return false;
+        }
+
+        if (check4check(num, c, black_turns_) || check4check(num, d, black_turns_))
+        {
+            cout << "Castling is illegal.\n";
+            return false;
+        }
+        pieces_[num][e]->move(num, c, this);
+        pieces_[num][a]->move(num, d, this);
+
+    }
+    
+    return true;
 }

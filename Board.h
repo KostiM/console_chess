@@ -31,4 +31,5 @@ public:
 	bool check4check(int num, int letter, bool for_black);
 	bool check4mate(bool for_black);
 	bool check4cover(Piece* king, Piece* checker);
+	bool castling(int num, int letter);
 };
