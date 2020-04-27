@@ -27,7 +27,6 @@ int main()
             if (board.is_checkmate)
                 break;
             while (!(board.turn())) {
-
             }
             break;
         }
@@ -51,7 +50,6 @@ int main()
         }
         }
         board.draw();
-
         if (board.is_checkmate) {
             cout << (board.black_turns_ ? "White win!\n" : "Black win!\n");
             cout << "The game is over! You can start new by restart or load saved one!\n";
@@ -77,15 +75,12 @@ int main()
     return 0;
 }
 
-
 char userChoose() {
     string choice;
     cout << "What do you want to do now? (Move[M], Restart[R], Save[S], Load[L], Exit[E]):";
-    getline(cin, choice);
+    getline(cin,choice);
     choice.erase(std::remove(choice.begin(), choice.end(), ' '), choice.end());
-
     char result = '0';
-
     if (choice == "Move" || choice == "M" || choice == "m")
     {
         result = 'm';
@@ -106,6 +101,5 @@ char userChoose() {
     {
         result = 'e';
     }
-
     return result;
 }

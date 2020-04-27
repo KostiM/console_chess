@@ -131,7 +131,7 @@ bool Board::load()
             }
         blackKing_ = 0;
         whiteKing_ = 0;
-        fin >> black_turns_ >> is_check;
+        fin >> black_turns_ >> is_check ;
         char name;
         int num, letter;
         bool is_black, firstmovedone;
@@ -190,7 +190,6 @@ bool Board::turn()
     char fromChar, toChar;
     int fromNumber, toNumber;
     int fromLetter, toLetter;
-
     cout << "Enter your move (ex. b1 b2):";
     string move;
     getline(cin, move);
@@ -236,14 +235,16 @@ bool Board::turn()
             cout << "You can not do castling when your king is checked!";
             return 0;
         }
-
         if (castling(toNumber, toLetter)) {}
         else
             return false;
     }
     else {
         if (pieces_[fromNumber][fromLetter]->try2move(toNumber, toLetter, this))
-            if (pieces_[fromNumber][fromLetter]->move(toNumber, toLetter, this)) {}
+            if (pieces_[fromNumber][fromLetter]->move(toNumber, toLetter, this)) {
+                if((toNumber == 0 || toNumber == 7) && pieces_[toNumber][toLetter]->name_ == 'p')
+                    while (!promotion(toNumber,toLetter)) {}
+            }
             else
                 return false;
         else {
@@ -510,5 +511,38 @@ bool Board::castling(int num, int letter)
 
     }
     
+    return true;
+}
+
+bool Board::promotion(int num, int letter)
+{
+    cout << "It`s pawn promotion.\nWhat piece whould you like to get? (Queen[Q], Rook[R], Bishop[B], Knight[N]):";
+    delete pieces_[num][letter];
+    pieces_[num][letter] = 0;
+
+    string choice;
+    getline(cin, choice);
+    choice.erase(std::remove(choice.begin(), choice.end(), ' '), choice.end());
+    if (choice == "Queen" || choice == "Q" || choice == "q")
+    {
+        pieces_[num][letter] = new Queen(num, letter, black_turns_);
+    }
+    else if (choice == "Rook" || choice == "R" || choice == "r")
+    {
+        pieces_[num][letter] = new Rook(num, letter, black_turns_);
+    }
+    else if (choice == "Bishop" || choice == "B" || choice == "b")
+    {
+        pieces_[num][letter] = new Bishop(num, letter, black_turns_);
+    }
+    else if (choice == "Knight" || choice == "N" || choice == "n")
+    {
+        pieces_[num][letter] = new Knight(num, letter, black_turns_);
+    }
+    else
+    {
+        cout << "Invalid input. Please, try again.\n";
+        return false;
+    }
     return true;
 }

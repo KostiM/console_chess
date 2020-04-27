@@ -4,7 +4,7 @@
 #include <algorithm> //  swap()
 
 constexpr auto letters = "   a   b   c   d   e   f   g   h\n";
-constexpr auto line = " --------------------------------\n";
+constexpr auto line = " ---------------------------------\n";
 constexpr auto empty_cell = "   ";
 enum letter { a, b, c, d, e, f, g, h };
 
@@ -35,4 +35,5 @@ public:
 	bool check4mate(bool for_black);
 	bool check4cover(Piece* king, Piece* checker);
 	bool castling(int num, int letter);
+	bool promotion(int num, int letter);
 };
