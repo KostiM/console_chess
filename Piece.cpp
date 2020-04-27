@@ -60,3 +60,13 @@ bool Piece::move4try(int toNumber, int toLetter, Board* board)
 		board->pieces_[toNumber][toLetter] = toBackup;
 	return will_not_be_check;
 }
+
+std::ostream& operator<<(std::ostream& out, Piece const& piece)
+{
+	out << piece.name_ << ' ';
+	out << piece.num_ << ' ';
+	out << piece.letter_ << ' ';
+	out << piece.is_black_ << ' ';
+	out << piece.firstMoveDone_ << endl;
+	return out;
+}

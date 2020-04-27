@@ -4,6 +4,7 @@
 Knight::Knight(int num, int letter, bool is_black)
 	: Piece(num, letter, is_black)
 {
+	name_ = 'n';
 }
 
 void Knight::print()

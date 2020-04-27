@@ -5,6 +5,7 @@ Queen::Queen(int num, int letter, bool is_black)
 	: Piece(num, letter, is_black)
 {
 	canBeCovered_ = true;
+	name_ = 'q';
 }
 
 void Queen::print()

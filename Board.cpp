@@ -5,7 +5,9 @@
 #include "Bishop.h"
 #include "Queen.h"
 #include "King.h"
-#include <algorithm> //swap()
+#include <algorithm>
+#include <fstream>
+#include <string>//swap()
 
 
 Board::Board()
@@ -44,6 +46,40 @@ Board::~Board()
             delete pieces_[i][j];
 }
 
+void Board::reset()
+{
+    for (int i = 0; i < 8; ++i)
+        for (int j = 0; j < 8; ++j) {
+            delete pieces_[i][j];
+            pieces_[i][j] = 0;
+        }
+    black_turns_ = false;
+    is_check = false;
+    is_checkmate = false;
+    for (int i = 0; i < 8; ++i) {
+        pieces_[1][i] = new Pawn(1, i, white);
+        pieces_[6][i] = new Pawn(6, i, black);
+    }
+    pieces_[0][1] = new Knight(0, 1, white);
+    pieces_[0][6] = new Knight(0, 6, white);
+    pieces_[7][1] = new Knight(7, 1, black);
+    pieces_[7][6] = new Knight(7, 6, black);
+    pieces_[0][0] = new Rook(0, 0, white);
+    pieces_[0][7] = new Rook(0, 7, white);
+    pieces_[7][0] = new Rook(7, 0, black);
+    pieces_[7][7] = new Rook(7, 7, black);
+    pieces_[0][2] = new Bishop(0, 2, white);
+    pieces_[0][5] = new Bishop(0, 5, white);
+    pieces_[7][2] = new Bishop(7, 2, black);
+    pieces_[7][5] = new Bishop(7, 5, black);
+    pieces_[0][3] = new Queen(0, 3, white);
+    pieces_[7][3] = new Queen(7, 3, black);
+    pieces_[0][4] = new King(0, 4, white);
+    whiteKing_ = pieces_[0][4];
+    pieces_[7][4] = new King(7, 4, black);
+    blackKing_ = pieces_[7][4];
+}
+
 void Board::draw()
 {
     system("cls");
@@ -66,6 +102,89 @@ void Board::draw()
     cout << "               Black\n";
 }
 
+void Board::save()
+{
+    ofstream fout;
+    fout.open("chess_saved_data.txt");
+    if (fout.is_open()) {
+        fout << black_turns_ << endl;
+        fout << is_check << endl;
+        for(int i = 0; i < 8; ++i)
+            for (int j = 0; j < 8; ++j) {
+                
+                if (pieces_[i][j])
+                    fout << *pieces_[i][j];
+            }
+    }
+    fout.close();
+}
+
+bool Board::load()
+{
+    ifstream fin;
+    fin.open("chess_saved_data.txt");
+    if (fin.is_open()) {
+        for (int i = 0; i < 8; ++i)
+            for (int j = 0; j < 8; ++j) {
+                delete pieces_[i][j];
+                pieces_[i][j] = 0;
+            }
+        blackKing_ = 0;
+        whiteKing_ = 0;
+        fin >> black_turns_ >> is_check;
+        char name;
+        int num, letter;
+        bool is_black, firstmovedone;
+        while (fin >> name >> num >> letter >> is_black >> firstmovedone) {
+            switch (name)
+            {
+            case'p': {
+                pieces_[num][letter] = new Pawn(num, letter, is_black);
+                if (firstmovedone)
+                    pieces_[num][letter]->firstMoveDone_ = firstmovedone;
+                break;
+            }
+            case'n': {
+                pieces_[num][letter] = new Knight(num, letter, is_black);
+                if (firstmovedone)
+                    pieces_[num][letter]->firstMoveDone_ = firstmovedone;
+                break;
+            }
+            case'r': {
+                pieces_[num][letter] = new Rook(num, letter, is_black);
+                if (firstmovedone)
+                    pieces_[num][letter]->firstMoveDone_ = firstmovedone;
+                break;
+            }
+            case'b': {
+                pieces_[num][letter] = new Bishop(num, letter, is_black);
+                if (firstmovedone)
+                    pieces_[num][letter]->firstMoveDone_ = firstmovedone;
+                break;
+            }
+            case'q': {
+                pieces_[num][letter] = new Queen(num, letter, is_black);
+                if (firstmovedone)
+                    pieces_[num][letter]->firstMoveDone_ = firstmovedone;
+                break;
+            }
+            case'k': {
+                pieces_[num][letter] = new King(num, letter, is_black);
+                if (firstmovedone)
+                    pieces_[num][letter]->firstMoveDone_ = firstmovedone;
+                (is_black ? blackKing_ : whiteKing_) = pieces_[num][letter];
+                break;
+            }
+            }
+        }
+        fin.close();
+        return true;
+    }
+    else
+        return false;
+    
+}
+
 bool Board::turn()
 {
     char fromChar, toChar;
@@ -73,12 +192,21 @@ bool Board::turn()
     int fromLetter, toLetter;
 
     cout << "Enter your move (ex. b1 b2):";
-    cin >> fromChar >> fromNumber >> toChar >> toNumber;
-    cout << endl;
+    string move;
+    getline(cin, move);
+    move.erase(std::remove(move.begin(), move.end(), ' '), move.end());
+    if (move.size() < 4) {
+        cout << "Invalid input! Please, try again according to the example.\n";
+        return false;
+    }
+    fromChar = move.at(0);
+    fromNumber = move.at(1) - '0';
+    toChar = move.at(2);
+    toNumber = move.at(3) - '0';
     if (fromChar > 'h' || fromChar < 'a' || toChar > 'h' || toChar < 'a' ||
         fromNumber < 1 || fromNumber > 8 || toNumber < 1 || toNumber > 8)
     {
-        cout << "Your move is illegal! Please, try again.\n";
+        cout << "Invalid input! Please, try again according to the example.\n";
         return false;
     }
 
@@ -330,9 +458,8 @@ bool Board::check4cover(Piece* king, Piece* checker)
 
         }
     }
-    else {
-        return false;
-    }
+    
+    return false;
 }
 
 bool Board::castling(int num, int letter)

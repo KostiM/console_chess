@@ -4,6 +4,7 @@
 King::King(int num, int letter, bool is_black)
 	: Piece(num, letter, is_black)
 {
+	name_ = 'k';
 }
 
 void King::print()

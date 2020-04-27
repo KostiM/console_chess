@@ -9,14 +9,15 @@ class Board;
 class Piece 
 {
 public:
+	char name_;
 	bool canBeCovered_ = false;
 	int num_;
 	int letter_;
 	bool firstMoveDone_ = false;
-	Piece(int num, int letter, bool);
 	bool is_black_;
+	Piece(int num, int letter, bool);
+	
 	virtual void print() = 0;
-
 	virtual ~Piece() = default;
 
 	bool move(int toNumber, int toLetter, Board * board);
@@ -24,3 +25,5 @@ public:
 	bool move4try(int toNumber, int toLetter, Board* board);
 
 };
+
+std::ostream& operator << (std::ostream& fout, Piece const& piece);

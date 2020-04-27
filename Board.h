@@ -25,7 +25,10 @@ public:
 	
 	Board();
 	~Board();
+	void reset();
 	void draw();
+	void save();
+	bool load();
 	bool turn();
 	bool check4check(bool for_black);
 	bool check4check(int num, int letter, bool for_black);
