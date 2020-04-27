@@ -81,10 +81,12 @@ bool Board::turn()
         cout << "Your move is illegal! Please, try again.\n";
         return false;
     }
+
     fromLetter = char2letter(fromChar);
     toLetter = char2letter(toChar);
     --fromNumber;
     --toNumber;
+
     if (!pieces_[fromNumber][fromLetter])
     {
         cout << "Your move is illegal! Please, try again.\n";
@@ -203,6 +205,7 @@ bool Board::check4check(int num, int letter, bool for_black)
 bool Board::check4mate(bool for_black)
 {
     //check if any allied piece can capture the checker
+    check4check(for_black);
     for(int i = 0; i < 8; ++i)
         for (int j = 0; j < 8; ++j)
             if(pieces_[i][j] && pieces_[i][j]->is_black_ == for_black)
@@ -215,14 +218,18 @@ bool Board::check4mate(bool for_black)
 
     for (int i = -1; i < 2; ++i)
         for (int j = -1; j < 2; ++j)
-            if (i || j)
-                if (king->try2move(king->num_ + i, king->letter_ + j, this) && king->move4try(king->num_ + i, king->letter_ + j, this))
-                    return false;
+            if (i || j) {
+                int toNumber = king->num_ + i;
+                int toLetter = king->letter_ + j;
+                if (toNumber >= 0 && toNumber <= 7 && toLetter >= 0 && toLetter <= 7)
+                    if (king->try2move(toNumber, toLetter, this) && king->move4try(toNumber, toLetter, this))
+                        return false;
+            }
 
     // check if any piece can cover the king
 
     check4check(for_black); // in order to update checkerNum_ and checkerLetter_
-    if (!check4cover(king, pieces_[checkerNum_][checkerLetter_]))
+    if (check4cover(king, pieces_[checkerNum_][checkerLetter_]))
         return false;
 
 

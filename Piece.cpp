@@ -13,9 +13,9 @@ bool Piece::move(int toNumber, int toLetter, Board * board)
 		return false;
 	}
 
-	bool ok = move4try(toNumber,toLetter, board); // move2try checks if the move don`t cause check
+	bool will_be_check = ! move4try(toNumber,toLetter, board); // move2try checks if the move don`t cause check
 
-	if (ok) {
+	if (will_be_check) {
 		cout << "This move causes or do not avoid check! Please, try again mindfully.\n";
 		return false;
 	}
@@ -51,12 +51,12 @@ bool Piece::move4try(int toNumber, int toLetter, Board* board)
 	num_ = toNumber;
 	letter_ = toLetter;
 
-	bool ok = (board->black_turns_ ? board->check4check(black) : board->check4check(white));
+	bool will_not_be_check = !(board->black_turns_ ? board->check4check(black) : board->check4check(white));
 
 	swap(board->pieces_[numBackup][letterBackup], board->pieces_[toNumber][toLetter]);
 	num_ = numBackup;
 	letter_ = letterBackup;
-
-	board->pieces_[toNumber][toLetter] = toBackup;
-	return ok;
+	if(toBackup)
+		board->pieces_[toNumber][toLetter] = toBackup;
+	return will_not_be_check;
 }
