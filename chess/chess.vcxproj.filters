@@ -18,28 +18,28 @@
     <ClCompile Include="chess.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Pawn.cpp">
+    <ClCompile Include="Bishop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Piece.cpp">
+    <ClCompile Include="King.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Knight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Rook.cpp">
+    <ClCompile Include="Pawn.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bishop.cpp">
+    <ClCompile Include="Piece.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Queen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="King.cpp">
+    <ClCompile Include="Rook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

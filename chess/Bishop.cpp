@@ -1,6 +1,7 @@
 #include "Bishop.h"
 #include "Board.h"
 
+
 Bishop::Bishop(int num, int letter, bool is_black)
 	: Piece(num, letter, is_black)
 {

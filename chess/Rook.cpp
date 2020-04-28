@@ -1,6 +1,7 @@
 #include "Rook.h"
 #include "Board.h"
 
+
 Rook::Rook(int num, int letter, bool is_black)
 	: Piece(num, letter, is_black)
 {

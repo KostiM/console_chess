@@ -1,6 +1,7 @@
 #include "Piece.h"
 #include "Board.h"
 
+
 Piece::Piece(int num, int letter, bool is_black)
 	: num_(num), letter_(letter), is_black_(is_black)
 {

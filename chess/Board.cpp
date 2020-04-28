@@ -10,6 +10,7 @@
 #include <string>//swap()
 
 
+
 Board::Board()
 {
     pieces_.reserve(8);
@@ -230,7 +231,7 @@ bool Board::turn()
     }
 
     if (fromLetter == e && abs(toLetter - fromLetter) == 2
-        && (fromNumber == 0 || fromNumber == 7) && (toNumber - fromNumber) == 0) { // check for castling
+        && (fromNumber == 0 || fromNumber == 7) && (toNumber - fromNumber) == 0 && pieces_[fromNumber][fromLetter]->name_ == 'k') { // check for castling
         if (is_check) {
             cout << "You can not do castling when your king is checked!";
             return 0;
@@ -465,13 +466,13 @@ bool Board::check4cover(Piece* king, Piece* checker)
 
 bool Board::castling(int num, int letter)
 {
-    if (pieces_[num][e]->firstMoveDone_) {
+    if (pieces_[num][e] && pieces_[num][e]->firstMoveDone_) {
         cout << "Castling is not allowed. The king have already moved.\n";
         return false;
     }
 
     if (letter == g) {  //short castling
-        if (pieces_[num][h]->firstMoveDone_) {
+        if (pieces_[num][h] && pieces_[num][h]->firstMoveDone_) {
             cout << "Castling is illegal. The rook have already moved.\n";
             return false;
         }
@@ -481,7 +482,7 @@ bool Board::castling(int num, int letter)
             cout << "Castling is illegal.\n";
             return false;
         }
-        if (check4check(num, f, black_turns_) || check4check(num, g, black_turns_))
+        if (check4check(num, f, (num == 0 ? white : black)) || check4check(num, g, (num == 0 ? white : black)))
         {
             cout << "Castling is illegal.\n";
             return false;
@@ -490,7 +491,7 @@ bool Board::castling(int num, int letter)
         pieces_[num][h]->move(num, f, this);
     }
     else { // letter == c long castlig
-        if (pieces_[num][a]->firstMoveDone_) {
+        if (pieces_[num][a] && pieces_[num][a]->firstMoveDone_) {
             cout << "Castling is illegal. The rook have already moved.\n";
             return false;
         }
@@ -501,7 +502,7 @@ bool Board::castling(int num, int letter)
             return false;
         }
 
-        if (check4check(num, c, black_turns_) || check4check(num, d, black_turns_))
+        if (check4check(num, c, (num == 0 ? white : black)) || check4check(num, d, (num == 0 ? white : black)))
         {
             cout << "Castling is illegal.\n";
             return false;

@@ -25,6 +25,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <ProjectName>Sample-Test1</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -36,6 +37,14 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\chess\Bishop.cpp" />
+    <ClCompile Include="..\chess\Board.cpp" />
+    <ClCompile Include="..\chess\King.cpp" />
+    <ClCompile Include="..\chess\Knight.cpp" />
+    <ClCompile Include="..\chess\Pawn.cpp" />
+    <ClCompile Include="..\chess\Piece.cpp" />
+    <ClCompile Include="..\chess\Queen.cpp" />
+    <ClCompile Include="..\chess\Rook.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -54,7 +63,7 @@
   </ImportGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>

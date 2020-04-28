@@ -1,6 +1,7 @@
 #include "Knight.h"
 #include "Board.h"
 
+
 Knight::Knight(int num, int letter, bool is_black)
 	: Piece(num, letter, is_black)
 {
